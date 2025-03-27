@@ -28,19 +28,28 @@ function render(variables = {}) {
   // if includeCover==false then we reset the cover code without the <img> tag to make the cover transparent.
   let cover = `<div class="cover"><img src="${variables.background}" /></div>`;
   if (variables.includeCover == false) cover = "<div class='cover'></div>";
+  let name = variables.name ? variables.name : "Your name";
+  let lastName = variables.lastName ? variables.lastName : "last name";
+  let role = variables.role ? variables.role : "Occupation";
+  let country = variables.country ? variables.country : "Country";
+  let city = variables.city ? variables.city : "City";
 
   // reset the website body with the new html output
   document.querySelector("#widget_content").innerHTML = `<div class="widget">
             ${cover}
           <img src="${variables.avatarURL}" class="photo" />
-          <h1>Lucy Boilett</h1>
-          <h2>Web Developer</h2>
-          <h3>Miami, USA</h3>
-          <ul class="position-right">
-            <li><a href="https://twitter.com/4geeksacademy"><i class="fab fa-twitter"></i></a></li>
-            <li><a href="https://github.com/4geeksacademy"><i class="fab fa-github"></i></a></li>
-            <li><a href="https://linkedin.com/school/4geeksacademy"><i class="fab fa-linkedin"></i></a></li>
-            <li><a href="https://instagram.com/4geeksacademy"><i class="fab fa-instagram"></i></a></li>
+          <h1>${name} ${lastName} </h1>
+          <h2>${role}</h2>
+          <h3>${country} ${city}</h3>
+          <ul class= "${variables.socialMediaPosition || "position-right"}">
+            <li><a href="https://twitter.com/${variables.twitter ||
+    "#"}"><i class="fab fa-twitter"></i></a></li>
+            <li><a href="https://github.com/${variables.github ||
+    "#"}" ><i class="fab fa-github"></i></a></li>
+            <li><a href="https://linkedin.com/school/${variables.linkedin ||
+    "#"}"><i class="fab fa-linkedin"></i></a></li>
+            <li><a href="https://instagram.com/${variables.instagram ||
+    "#"}"><i class="fab fa-instagram"></i></a></li>
           </ul>
         </div>
     `;
@@ -49,7 +58,7 @@ function render(variables = {}) {
 /**
  * Don't change any of the lines below, here is where we do the logic for the dropdowns
  */
-window.onload = function() {
+window.onload = function () {
   window.variables = {
     // if includeCover is true the algorithm should show the cover image
     includeCover: true,
@@ -72,8 +81,8 @@ window.onload = function() {
   };
   render(window.variables); // render the card for the first time
 
-  document.querySelectorAll(".picker").forEach(function(elm) {
-    elm.addEventListener("change", function(e) {
+  document.querySelectorAll(".picker").forEach(function (elm) {
+    elm.addEventListener("change", function (e) {
       // <- add a listener to every input
       const attribute = e.target.getAttribute("for"); // when any input changes, collect the value
       let values = {};
@@ -81,10 +90,10 @@ window.onload = function() {
         this.value == "" || this.value == "null"
           ? null
           : this.value == "true"
-          ? true
-          : this.value == "false"
-          ? false
-          : this.value;
+            ? true
+            : this.value == "false"
+              ? false
+              : this.value;
       render(Object.assign(window.variables, values)); // render again the card with new values
     });
   });
